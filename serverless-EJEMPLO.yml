@@ -1,0 +1,101 @@
+# org: selfrealizationfellowship
+# app: convocation
+service: convo-microservices
+frameworkVersion: '3'
+
+useDotenv: true
+
+provider:
+  name: aws
+  runtime: nodejs14.x
+  stage: "${opt:stage, 'qa'}"
+  region: "${opt:region, 'us-east-1'}"
+  profile: ${self:custom.profiles.${sls:stage}}
+  httpApi: ${file(resources/APIGateway.yml)}
+  iamRoleStatements: ${file(resources/IAM.yml)}
+
+  environment:
+    REGION: 'us-east-1'
+    DYNAMO_TABLE: 'Convocation'
+    STAGE: ${self:provider.stage}
+    REGISTRATION_TOPIC_URL: !Ref registrationTopic
+    PURCHASE_TOPIC_URL: !Ref purchaseTopic
+  stackTags:
+    Application: convo-microservices
+    Environment: '${env:ENVIRONMENT_TAG}'
+    CreatedBy: LuisBarral
+    Organization: Vairix
+  deploymentBucket:
+    name: '${self:service}-${self:provider.stage}-yogananda-convocation-bucket'
+    tags:
+      Application: convo-microservices
+      Environment: '${env:ENVIRONMENT_TAG}'
+      CreatedBy: LuisBarral
+      Organization: Vairix
+
+package:
+  # en cada lambda incluime esto (importante, si no lo hacés
+  # queda un monolito)
+  individually: true
+  patterns:
+    - '!**/*'
+    - libs/**
+
+custom:
+  serverless-layers:
+    dependenciesPath: ./package.json
+    packageManager: npm
+  profiles:
+    qa: 'srf'
+    stg: 'srf-stg'
+    prod: 'srf-prod'
+  domains:
+    qa: 'qa.convocation.api.yogananda.org'
+    stg: 'stg.convocation.api.yogananda.org'
+    prod: 'convocation.api.yogananda.org'
+  certificates:
+    qa: 'arn:aws:acm:us-east-1:626833513411:certificate/0a7d1bc4-a524-43f7-9754-f11652833ee5'
+    stg: 'arn:aws:acm:us-east-1:578113714488:certificate/d19b15c3-45c6-4a18-824f-bd062b71e70b'
+    prod: 'arn:aws:acm:us-east-1:604552539874:certificate/175f575a-817e-4e5a-be27-496f2ea15ede'
+  customDomain:
+    domainName: ${self:custom.domains.${sls:stage}}
+    certificateArn: ${self:custom.certificates.${sls:stage}}
+    basePath: ''
+    stage: ${self:provider.stage}
+    apiType: http
+    endpointType: 'regional'
+    securityPolicy: tls_1_2
+    createRoute53Record: false
+    createRoute53IPv6Record: false
+    autoDomain: true
+
+functions:
+  - ${file(resources/functions/Registration.yml)}
+  - ${file(resources/functions/Ceremonies.yml)}
+  - ${file(resources/functions/Pilgrimages.yml)}
+  - ${file(resources/functions/Registration-Ceremonies.yml)}
+  - ${file(resources/functions/Workers.yml)}
+  - ${file(resources/functions/Stream.yml)}
+  - ${file(resources/functions/Mailings.yml)}
+  - ${file(resources/functions/Purchases.yml)}
+  - ${file(resources/functions/Stats.yml)}
+  - ${file(resources/functions/Admins.yml)}
+  - ${file(resources/functions/Members.yml)}
+  - ${file(resources/functions/Locations.yml)}
+
+plugins:
+  - serverless-offline
+  - serverless-layers
+  - serverless-deployment-bucket
+  - serverless-domain-manager
+  - serverless-plugin-custom-roles
+
+resources:
+  # Crea recursos de AWS directamente desde serverless
+  - ${file(resources/DynamoDB.yml)}
+  - ${file(resources/SQS.yml)}
+  - ${file(resources/SQSPolicy.yml)}
+  - ${file(resources/SSM.yml)}
+  - ${file(resources/SNS.yml)}
+  - ${file(resources/CloudWatch.yml)}
+  - ${file(resources/S3.yml)}
