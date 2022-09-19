@@ -28,18 +28,18 @@ functions:
     handler: handler.hello
     events:
       - http:
-          path: /
+          path: /hello
           method: get
           private: true
   healthcheck:
     handler: handler.healthcheck
     events:
       - http:
-          path: /
+          path: /healthcheck
           method: get
   secretTest:
     handler: handler.secretTest
     events:
       - http:
-          path: /
+          path: /secret
           method: get

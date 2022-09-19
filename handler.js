@@ -1,6 +1,6 @@
 "use strict";
 
-const SecretsManager = require('./SecretsManager.js');
+const SecretsManager = require('./secretsManager.js');
 
 module.exports.hello = async (event) => {
   return {
