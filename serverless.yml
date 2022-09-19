@@ -37,3 +37,9 @@ functions:
       - http:
           path: /
           method: get
+  secretTest:
+    handler: handler.secretTest
+    events:
+      - http:
+          path: /
+          method: get

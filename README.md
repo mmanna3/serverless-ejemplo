@@ -14,6 +14,15 @@ authorAvatar: 'https://avatars1.githubusercontent.com/u/13742415?s=200&v=4'
 
 sls deploy -s dev (toma credenciales gardmanaDev)
 
+# Crear un secret desde la cli
+
+      aws secretsmanager create-secret \
+        --name nombreDelSecreto \
+        --description "Descripción" \
+        --secret-string "abcdefghijk" \
+        --profile nombreDelPerfilEnArchivoLocalAws-Config \
+        --region us-east-1
+
 # Serverless Framework Node HTTP API on AWS
 
 This template demonstrates how to make a simple HTTP API with Node.js running on AWS Lambda and API Gateway using the Serverless Framework.
