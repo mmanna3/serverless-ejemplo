@@ -12,7 +12,7 @@ authorAvatar: 'https://avatars1.githubusercontent.com/u/13742415?s=200&v=4'
 
 # Deployar con dev profile
 
-sls deploy -s dev (toma credenciales gardmanaDev)
+sls deploy -s dev (toma credenciales gardmanaDev de .aws/credentials)
 
 # Crear un secret desde la cli
 
