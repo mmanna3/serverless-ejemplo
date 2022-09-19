@@ -31,3 +31,9 @@ functions:
           path: /
           method: get
           private: true
+  healthcheck:
+    handler: handler.healthcheck
+    events:
+      - http:
+          path: /
+          method: get

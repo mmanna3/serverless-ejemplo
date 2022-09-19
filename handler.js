@@ -13,3 +13,17 @@ module.exports.hello = async (event) => {
     ),
   };
 };
+
+module.exports.healthcheck = async (event) => {
+  return {
+    statusCode: 200,
+    body: JSON.stringify(
+      {
+        message: "I am healthy!",
+        input: event,
+      },
+      null,
+      2
+    ),
+  };
+};
