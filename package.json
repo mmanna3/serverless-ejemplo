@@ -6,9 +6,9 @@
   "author": "mmanna3 <mmmannna3@gmail.com>",
   "license": "MIT",
   "scripts": {
-    "clean": "rm -f s_*.js && rm yarn.lock && rm -rf node_modules && yarn",
+    "clean": "rm -f s_*.js && rm -f yarn.lock && rm -rf node_modules && yarn",
     "invoke": "serverless invoke local --function",
-    "deploy": "sls deploy -s dev "
+    "deploy": "sls deploy -s dev"
   },
   "devDependencies": {
     "aws-sdk": "^2.1222.0",
