@@ -23,7 +23,6 @@ class ClubReadyConnector {
     const secretName = 'clubReadyApiKey';
     const region = 'us-east-1';
     let apiKey = await SecretsManager.getSecret(secretName, region);
-
     const defaultOptions = {
       host: 'clubready.com',    
       path: `/api/v2/{ApiKey}/corp/{ChainId}/clubs?ApiKey=${apiKey}&ChainId=18`,

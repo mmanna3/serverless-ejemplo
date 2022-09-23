@@ -12,7 +12,7 @@ class SecretsManager {
         var secret, decodedBinarySecret;
         let secretsManager = new AWS.SecretsManager(config);
         try {
-            let secretValue = await secretsManager.getSecretValue({SecretId: secretName}).promise();
+            let secretValue = await (secretsManager.getSecretValue({SecretId: secretName}).promise());
             if ('SecretString' in secretValue) {
                 return secret = secretValue.SecretString;
             } else {
