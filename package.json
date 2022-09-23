@@ -1,0 +1,17 @@
+{
+  "name": "aws-node-http-api-project",
+  "version": "1.0.0",
+  "main": "handler.js",
+  "repository": "git@github.com:mmanna3/serverless-ejemplo.git",
+  "author": "mmanna3 <mmmannna3@gmail.com>",
+  "license": "MIT",
+  "scripts": {
+    "clean": "rm -f s_*.js && rm yarn.lock && rm -rf node_modules && yarn",
+    "local": "serverless invoke local --function",
+    "deploy": "sls deploy -s dev "
+  },
+  "devDependencies": {
+    "aws-sdk": "^2.1222.0",
+    "https": "^1.0.0"
+  }
+}
